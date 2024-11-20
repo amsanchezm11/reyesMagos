@@ -94,6 +94,19 @@ def get_rey_mago(nombre: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Rey Mago no encontrado")
     return rey_mago
 
+
+@app.delete("/usuarios/{usuario_id}")
+def eliminar_rey_mago(usuario_id: int, db: Session = Depends(get_db)):
+    try:
+        rey_eliminado = crud.delete_rey_mago(db, usuario_id)
+        return {"msg": f"Rey con ID {usuario_id} ha sido eliminado", "rey": rey_eliminado}
+    except NoResultFound:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error al eliminar el usuario: {str(e)}")
+
+
 # Rutas para Juguete
 
 
@@ -127,7 +140,7 @@ def get_juguete_id(id: str, db: Session = Depends(get_db)):
     return juguete
 
 
-@app.delete("/juguetes/{usuario_id}")
+@app.delete("/juguetes/{juguete_id}")
 def eliminar_juguete(juguete_id: int, db: Session = Depends(get_db)):
     try:
         juguete_eliminado = crud.delete_juguete(db, juguete_id)

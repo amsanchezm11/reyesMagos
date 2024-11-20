@@ -55,6 +55,27 @@ def create_rey_mago(db: Session, rey_mago: ReyMagoCreate):
 def get_reyes_magos(db: Session, skip: int = 0, limit: int = 10):
     return db.query(ReyMago).offset(skip).limit(limit).all()
 
+
+def delete_rey_mago(db: Session, rey_id: int):
+    try:
+        # Buscar al rey en la base de datos usando su id
+        rey = db.query(ReyMago).filter(Usuario.id == rey_id).first()
+
+        # Si no se encuentra el rey, lanzamos una excepción
+        if rey is None:
+            raise NoResultFound("Rey no encontrado")
+
+        # Si el rey existe, lo eliminamos
+        db.delete(rey)  # Marcamos el objeto para eliminarlo
+        db.commit()  # Confirmamos la transacción
+        return rey  # Devolvemos el rey eliminado (opcional)
+
+    except NoResultFound as e:
+        raise e  # Lanza una excepción si no se encuentra el rey
+    except Exception as e:
+        db.rollback()  # Hacemos rollback si ocurre algún error
+        raise e  # Lanza cualquier otro error
+
 # Juguete CRUD
 
 

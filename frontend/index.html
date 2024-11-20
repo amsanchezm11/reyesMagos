@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crear Usuario</title>
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/script.js" defer></script>
 </head>
@@ -17,14 +17,16 @@
         
         <div>
             <label for="nombre">Nombre:</label>
-            <input id="nombre" name="nombre" type="text" maxlength="10">
+            <input id="nombre" name="nombre" type="text">
         </div>
 
         <div>
             <label for="edad">Edad:</label>
-            <input id="edad" name="edad" type="number" min="0" max="15" step="1">
+            <input id="edad" name="edad" type="number">
         </div>
-
+        <div>
+            <p id="aviso"></p>
+        </div>
         <div id="botones" class="container-botones">
             <div>
                 <button id="crear">Crear</button>

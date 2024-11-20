@@ -1,76 +1,67 @@
-# schemas.py
-from pydantic import BaseModel
-from typing import List, Optional
+# app/schemas.py
 
+from pydantic import BaseModel
+from typing import Optional
 
 class UsuarioBase(BaseModel):
     nombre: str
-    edad: int
-
+    email: str
+    reyMago: Optional[str] = None
 
 class UsuarioCreate(UsuarioBase):
-    pass
+    password: str
 
-
-class Usuario(UsuarioBase):
+class UsuarioRead(UsuarioBase):
     id: int
 
     class Config:
         orm_mode = True
 
-
-class ReyMagoBase(BaseModel):
+class TipoJugueteBase(BaseModel):
     nombre: str
 
-
-class ReyMagoCreate(ReyMagoBase):
+class TipoJugueteCreate(TipoJugueteBase):
     pass
 
-
-class ReyMago(ReyMagoBase):
+class TipoJugueteRead(TipoJugueteBase):
     id: int
 
     class Config:
         orm_mode = True
-
 
 class JugueteBase(BaseModel):
     nombre: str
-    imagen: str
-
+    imagen: Optional[str] = None
+    tipo_id: int
 
 class JugueteCreate(JugueteBase):
     pass
 
-
-class Juguete(JugueteBase):
+class JugueteRead(JugueteBase):
     id: int
 
     class Config:
         orm_mode = True
-
 
 class CartaBase(BaseModel):
-    id: int
     usuario_id: int
-    rey_mago_id: int
-    juguetes_ids: List[int]
+    juguete_id: int
 
-    class Config:
-        orm_mode = True
+class CartaCreate(CartaBase):
+    pass
 
-
-class CartaCreate(BaseModel):
-    usuario_id: int
-    rey_mago_id: int
-    juguetes_ids: List[int]
-
-    class Config:
-        orm_mode = True
-
-
-class Carta(CartaBase):
+class CartaRead(CartaBase):
     id: int
 
     class Config:
         orm_mode = True
+
+# Esquema para los datos de login
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+# Esquema para la respuesta con el token JWT
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str

@@ -50,3 +50,26 @@ th, td {
     padding: 10px; 
     text-align: left; 
 }
+
+
+.rojo{
+    border: 2px solid red;
+    border-radius: 2px;
+    outline: none;
+}
+
+.verde{
+    border: 2px solid greenyellow;
+    border-radius: 2px;
+    outline: none;
+}
+
+.avisoR{
+    font-weight: bold;
+    color: red;
+}
+
+.avisoV{
+    font-weight: bold;
+    color: green;
+}

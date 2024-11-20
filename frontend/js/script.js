@@ -1,41 +1,83 @@
-class Usuario {
-    constructor(nombre, edad) {
-        this.nombre = nombre;
-        this.edad = edad;
-        this.carta = [];
-    }
+function checkNombre(element) {
 
+    let regex = /^[A-Z][a-z]{0,9}$/;
+    comprobarRegex(element, regex);
+    // Texto Admite --> Nombre de la persona que empiece por mayúscula, longitud máxima 10 
 }
 
-let usuarios = [];
-let pepe = new Usuario("pepe",12);
-let juan = new Usuario("juan",14);
-let borja = new Usuario("borja",12);
-usuarios = [pepe,juan,borja];
+
+function checkEdad(element) {
+
+    let regex = /^(1[0-5]|[0-9])$/;
+    comprobarRegex(element, regex);
+    // Texto Admite --> Edad de la persona entre 0 y 15
+}
+
+function comprobarRegex(element, regex) {
+   // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
+    if (regex.test(element.value)) {
+        element.setAttribute("class", "verde");
+    } else {
+        element.setAttribute("class", "rojo");
+    }
+}
 
 
+//document.getElementById("crear").addEventListener("click", checkInputs);
+function checkInputs() {
+    let nombre = document.getElementById("nombre");
+    let edad = document.getElementById("edad");
+    let aviso = document.getElementById("aviso");
+   
+    checkNombre(nombre);
+    checkEdad(edad);
+    
+    if (nombre.className == "rojo") {
+        aviso.classList.remove("avisoV");
+        aviso.classList.add("avisoR");
+        aviso.innerHTML = "";
+        aviso.innerHTML = "Nombre Incorrecto. Longitud máxima 10.";
+        
+    }else if(edad.className == "rojo"){
+        aviso.classList.remove("avisoV");
+        aviso.classList.add("avisoR");
+        aviso.innerHTML = "";
+        aviso.innerHTML = "Edad Incorrecta. Edad entre 0 y 15";
+    }else {
+        aviso.classList.remove("avisoR");
+        aviso.classList.add("avisoV");
+        // MENSAJE DE QUE SE HA AÑADIDO CORRECTAMENTE
+        aviso.innerHTML = "";
+        aviso.innerHTML = "Usuario añadido correctamente.";
+        // RESETEAMOS LOS VALORES DE LOS INPUTS
+        nombre.value = "";  
+        edad.value = "";      
+        // RESETEO LAS CLASES DE LOS INPUTS PARA QUE NO SE LE QUEDE EL COLOR VERDE DEL BORDER
+        nombre.className = "";
+        edad.className = "";
+    }
+}
 
 function aniadirUsuario() {
     //let contenedor = document.getElementById("body");
     let nombre = document.getElementById("nombre").value;
     let edad = document.getElementById("edad").value;
 
-    if (!nombre || !edad) {
-        alert("Por favor, completa todos los campos.");
-        return;
-    }
+    checkInputs();
+        
+    //let usuario = new Usuario(nombre, parseInt(edad));
 
-    let usuario = new Usuario(nombre, parseInt(edad));
-
-    usuarios.push(usuario);
-    console.log(usuarios);
-    mostrarVerUsuarios();
+    //usuarios.push(usuario);
+    //console.log(usuarios);
+    //mostrarVerUsuarios();
   
 }
 
-if (document.getElementById("crear") != null) {
-    document.getElementById("crear").addEventListener("click",aniadirUsuario);
-}
+mostrarVerUsuarios();
+
+//if (document.getElementById("crear") != null) {
+//    document.getElementById("crear").addEventListener("click",aniadirUsuario);
+//}
 
 function mostrarVerUsuarios() {
 
@@ -56,67 +98,34 @@ function mostrarVerUsuarios() {
 
 }
 
-function crearTabla() {
-    let lista = document.getElementById("lista");
+// FETCH
 
-    let tabla = document.createElement("table");
-    tabla.id = "listaUsuarios";
-    tabla.classList.add("container-tabla");
+document.getElementById("crear").addEventListener("click", async (event) => {
+    event.preventDefault();
 
-    let tHead = document.createElement("thead");
-    let tBody = document.createElement("tbody");
-    tBody.id = "tBody";
-    let filaHead = document.createElement("tr");
-    let nombre = document.createElement("th");
-    nombre.innerHTML = "Nombre";
-    let edad = document.createElement("th");
-    edad.innerHTML = "Edad";
-    let acciones = document.createElement("th");
-    acciones.innerHTML = "Acciones";
-   
-    filaHead.append(nombre,edad,acciones);
-    tHead.appendChild(filaHead);
-    tabla.append(tHead,tBody);
-    lista.appendChild(tabla);
-}
+    let nombre = document.getElementById("nombre").value;
+    let edad = document.getElementById("edad").value;
 
+    try {
+        const response = await fetch("http://127.0.0.1:8000/usuarios/", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nombre,edad
+            })
+            
+          });
+        
+        const data = await response.json();
+        console.log(data);
+    
+    } catch (error) {
+        alert("algo salió mal");
+    }
 
-// Función crearLista
-
-function rellenarTabla() {
-    // Obtenemos el elemento tabla
-    let tablaBody = document.getElementById("tBody");
-    // Por cada usuario creamos una nueva fila en la tabla
-    usuarios.forEach(usuario => {
-        // Creamos el elemento(fila) que irá en la tabla
-        let fila = document.createElement("tr");
-        // Creamos el elemento(td) usuario
-        let usuarioNombre = document.createElement("td");
-        usuarioNombre.innerHTML = `${usuario.nombre}`;
-        let usuarioEdad = document.createElement("td");
-        usuarioEdad.innerHTML = `${usuario.edad}`;
-        // Creamos el elemento(td) botones
-        let botones = document.createElement("td");
-        // Creamos los 3 botones (aniadir / ver / borrar) y le asignamos ids dinámicos
-        let aniadirCarta = document.createElement("button");
-        aniadirCarta.id = `${usuario.nombre}Aniadir`;
-        aniadirCarta.innerHTML = "➕";
-        let verCarta = document.createElement("button");
-        verCarta.id = `${usuario.nombre}Ver`;
-        verCarta.innerHTML = "👁️";
-        let borrarCarta = document.createElement("button");
-        borrarCarta.id = `${usuario.nombre}Borrar`;
-        borrarCarta.innerHTML = "➖";
-        botones.append(aniadirCarta,verCarta,borrarCarta);
-        // Añadimos al td botones los 3 botones aniadir,ver y borrar
-        fila.append(usuarioNombre,usuarioEdad,botones);
-        // Añadimos la nueva fila a la tabla
-        tablaBody.appendChild(fila);
-    });
-}
+});
 
 
-if (document.getElementById("lista") != null) {
-    crearTabla();
-    rellenarTabla();
-}
+

@@ -109,15 +109,12 @@ document.getElementById("crear").addEventListener("click", async (event) => {
             /*data = await response.json();
             console.log(data);*/
 
-
         } catch (e) {
             alert('algo salio mal')
             errorEntrando =true;
         }
     }
 
-    //nombre = "";
-    //edad = ";"
 });
 
 // Función diasHastaReyes()

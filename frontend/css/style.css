@@ -1,10 +1,11 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-html{
+html {
     height: 100%;
     background-image: url(../img/fondo.jpg);
     background-repeat: no-repeat;
@@ -14,23 +15,54 @@ html{
     align-items: center;
 }
 
-.container-h1{
-    text-align: center;
-    margin-bottom: 20px;
-    color: white;
+body {
+    font-family: 'Georgia', serif;
+    margin: 0;
+    padding: 0;
+    /* color #006400 Verde oscuro navideño */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.formulario{
-    border: 2px solid blue;
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px 40px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.container-h1 {
+    /*color: #013220;*/
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px #000;
+    text-align: center;
+}
+
+
+
+.formulario {
+    /*border: 4px solid red;*/
     padding: 30px;
     border-radius: 15px;
     background-color: white;
 }
 
-.container-botones{
+.formulario label {
+    font-size: 1.2rem;
+    color: #013220;
+}
+
+.container-botones {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    gap: 20px;
 }
 
 .container-tabla {
@@ -39,37 +71,206 @@ html{
     padding: 30px;
     border-radius: 15px;
     border-collapse: separate;
-    border-spacing: 10px; 
+    border-spacing: 10px;
 }
 
 table {
-    width: 100%; 
+    width: 100%;
 }
 
-th, td {
-    padding: 10px; 
-    text-align: left; 
+th,
+td {
+    padding: 10px;
+    text-align: left;
 }
 
 
-.rojo{
+.rojo {
     border: 2px solid red;
     border-radius: 2px;
     outline: none;
 }
 
-.verde{
+.verde {
     border: 2px solid greenyellow;
     border-radius: 2px;
     outline: none;
 }
 
-.avisoR{
+.avisoR {
     font-weight: bold;
     color: red;
+    font-size: 1rem;
+    margin: 10px 0;
 }
 
-.avisoV{
+.avisoV {
     font-weight: bold;
     color: green;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.calendario-reyes {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.calendario-reyes:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.75));
+}
+
+main h1 {
+    text-align: center;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #d4af37;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button,a {
+    background-color: #d4af37;
+    border: none;
+    padding: 10px 20px;
+    border-bottom: 4px solid #b8860b;
+    font-size: 1rem;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+a{
+    text-decoration: none;
+}
+
+button:hover,a:hover {
+    background-color: #b8860b;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+#lista{
+    color: #000;
+    font-size: 1.5rem;
+}
+
+#lista td,tr,th{
+    text-align: center;
+}
+
+.acciones{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#h1-lista{
+    margin-bottom: 20px;
+}
+
+.enlace-lista{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.formulario-principal{
+    padding: 30px;
+    border-radius: 15px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+
+}
+
+.formulario-principal div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulario-principal img{
+    width: 100px;
+    height: 100px;
+}
+
+.formulario-principal a{
+    margin-top: -10px;
+}
+
+.h2{
+    color: #d4af37;
+}
+
+.container-inputs{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-inputs div{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    color: #d4af37;
+    font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+.input-file-input {
+    display: none; /* Esconde el input real */
+}
+
+/* Estilo para el botón personalizado */
+.input-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #d4af37; /* Dorado */
+    border-bottom: 4px solid #b8860b;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+}
+
+/* Efecto al pasar el mouse */
+.input-file-label:hover {
+    background-color: #b8860b; /* Dorado más oscuro */
+    transform: scale(1.05);
+}
+
+/* Para mostrar cuando el archivo esté seleccionado */
+.selected {
+   font-weight: bold;
+    color: white;
+    background-color: #4caf50;
+    border-bottom: 4px solid #013220;
 }

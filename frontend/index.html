@@ -4,37 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Usuario</title>
+    <title>Bienvenida</title>
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/script.js" defer></script>
 </head>
 
-<body id="body">
-    <div class="container-h1">
-        <h1>Crear Usuario</h1>
-    </div>
-    <div class="formulario">
-        
-        <div>
-            <label for="nombre">Nombre:</label>
-            <input id="nombre" name="nombre" type="text">
+<body>
+    <header>
+        <img id="reyes" src="img/calendario.png" class="calendario-reyes"></img>
+    </header>
+    <main id="main">
+        <div class="container-h1">
+            <h1>Bienvenido</h1>
+            <h2>¿Qué quieres hacer?</h2>
         </div>
-
-        <div>
-            <label for="edad">Edad:</label>
-            <input id="edad" name="edad" type="number">
+        <div class="formulario-principal">
+           <div>
+            <img src="img/bebe.png" alt="">
+            <a href="html/crearUsuario.html">Crear Usuario</a>
+           </div> 
+           <div>
+            <img src="img/melchor.png" alt="">
+            <a href="html/crearRey.html">Crear Rey Mago</a>
+           </div> 
+           <div>
+            <img src="img/juguetes.png" alt="">
+            <a href="html/crearJuguete.html">Crear Juguete</a>
+           </div> 
+           <div id="containerVer">
+            <img src="img/kids.png" alt="">  
+            <a href="html/listaVista.html">Ver Usuarios</a>      
+           </div> 
         </div>
-        <div>
-            <p id="aviso"></p>
-        </div>
-        <div id="botones" class="container-botones">
-            <div>
-                <button id="crear">Crear</button>
-            </div>
-            <div id="containerVer"></div>
-                        
-        </div>
-    </div>
+    </main>
+    
 
 
 </body>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../js/crearUsuarioController.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <img id="reyes" src="../img/calendario.png" class="calendario-reyes"></img>
+    </header>
+    <main id="main">
+        <div class="container-h1">
+            <h1>Crear Usuario</h1>
+        </div>
+        <div class="formulario">
+
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input id="nombre" name="nombre" type="text">
+            </div>
+
+            <div>
+                <label for="edad">Edad:</label>
+                <input id="edad" name="edad" type="number">
+            </div>
+            <div>
+                <p id="aviso"></p>
+            </div>
+            <div id="botones" class="container-botones">
+                <div class="container-botones">
+                    <button id="crear">Crear</button>
+                    <a href="listaVista.html">Ver Usuarios</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="enlace-lista">
+            <a href="../index.html">Men&uacute; Principal</a>
+        </div>
+    </main>
+
+</body>
+
+</html>

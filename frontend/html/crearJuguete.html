@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Rey Mago</title>
-    <script type="module" src="../js/crearReyController.js" defer></script>
+    <title>Crear Juguete</title>
     <link rel="stylesheet" href="../css/style.css">
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+    <script type="module" src="../js/crearReyController.js" defer></script>
+    <script type="module" src="../js/crearJuguete.js"></script>
+    
 </head>
-
 <body>
-
     <header>
         <img id="reyes" src="../img/calendario.png" class="calendario-reyes"></img>
     </header>
     <main>
         <div class="container-h1">
-            <h1 id="h1-lista">Crear Rey Mago</h1>
+            <h1 id="h1-lista">Crear Juguete</h1>
         </div>
         
         <div class="container">
-            <div>
-                <h2 class="h2">Escribe el nombre del rey mago que quieres crear</h2>
-                <input type="text" name="nombre" id="nombre">
+            <h2 class="h2"></h2>
+            <div class="container-inputs">
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" name="nombre" id="nombre">
+                </div>
+                <div class="input-file">
+                    <label for="imagen" class="input-file-label">Seleccionar imagen</label>
+                    <input type="file" name="imagen" id="imagen" class="input-file-input">
+                </div>
+                
             </div>
             <div>
                 <p id="aviso" class="avisoV"></p>
@@ -34,8 +40,5 @@
             </div>
         </div>
     </main>
-    
-
 </body>
-
 </html>

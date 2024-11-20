@@ -1,7 +1,6 @@
 function checkNombre(element) {
-
     let regex = /^[A-Z][a-z]{0,9}$/;
-    comprobarRegex(element, regex);
+    return comprobarRegex(element, regex);
     // Texto Admite --> Nombre de la persona que empiece por mayúscula, longitud máxima 10 
 }
 
@@ -9,7 +8,7 @@ function checkNombre(element) {
 function checkEdad(element) {
 
     let regex = /^(1[0-5]|[0-9])$/;
-    comprobarRegex(element, regex);
+    return comprobarRegex(element, regex);
     // Texto Admite --> Edad de la persona entre 0 y 15
 }
 
@@ -17,8 +16,10 @@ function comprobarRegex(element, regex) {
     // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
     if (regex.test(element.value)) {
         element.setAttribute("class", "verde");
+        return true;
     } else {
         element.setAttribute("class", "rojo");
+        return false;
     }
 }
 
@@ -28,9 +29,14 @@ function checkInputs() {
     let nombre = document.getElementById("nombre");
     let edad = document.getElementById("edad");
     let aviso = document.getElementById("aviso");
+    
     let todoOk = false;
-    checkNombre(nombre);
-    checkEdad(edad);
+
+    todoOk = checkNombre(nombre);
+
+    if (!todoOk) {
+        checkEdad(edad);
+    }  
 
     if (nombre.className == "rojo") {
         aviso.classList.remove("avisoV");
@@ -46,13 +52,9 @@ function checkInputs() {
     } else {
         aviso.classList.remove("avisoR");
         aviso.classList.add("avisoV");
-        todoOk = true;
         // MENSAJE DE QUE SE HA AÑADIDO CORRECTAMENTE
         aviso.innerHTML = "";
         aviso.innerHTML = "Usuario añadido correctamente.";
-        // RESETEAMOS LOS VALORES DE LOS INPUTS
-        nombre.value = "";
-        edad.value = "";
         // RESETEO LAS CLASES DE LOS INPUTS PARA QUE NO SE LE QUEDE EL COLOR VERDE DEL BORDER
         nombre.className = "";
         edad.className = "";
@@ -60,27 +62,7 @@ function checkInputs() {
     return todoOk;
 }
 
-function aniadirUsuario() {
-    //let contenedor = document.getElementById("body");
-    let nombre = document.getElementById("nombre").value;
-    let edad = document.getElementById("edad").value;
-
-    checkInputs();
-
-    //let usuario = new Usuario(nombre, parseInt(edad));
-
-    //usuarios.push(usuario);
-    //console.log(usuarios);
-    //mostrarVerUsuarios();
-
-}
-
-//mostrarVerUsuarios();
-
-//if (document.getElementById("crear") != null) {
-//    document.getElementById("crear").addEventListener("click",aniadirUsuario);
-//}
-
+// Función mostrarVerUsuarios()
 function mostrarVerUsuarios() {
 
     let botones = document.getElementById("containerVer");
@@ -104,13 +86,16 @@ function mostrarVerUsuarios() {
 
 document.getElementById("crear").addEventListener("click", async (event) => {
     event.preventDefault();
-
+    console.log("Entrando en la funcion");
+    console.log(checkInputs());
     // Si los inputs son correctos ingresamos el usuario en la BD
     if (checkInputs()) {
+        console.log(checkInputs());
         let nombre = document.getElementById("nombre").value;
         let edad = document.getElementById("edad").value;
-
+        console.log(nombre, edad);
         try {
+            console.log(nombre, edad);
             const response = await fetch("http://127.0.0.1:8000/usuarios/", {
                 method: "POST",
                 headers: {
@@ -119,17 +104,20 @@ document.getElementById("crear").addEventListener("click", async (event) => {
                 body: JSON.stringify({
                     nombre, edad
                 })
-
             });
 
-            const data = await response.json();
-            console.log(data);
+            /*data = await response.json();
+            console.log(data);*/
 
-        } catch (error) {
-            alert("algo salió mal");
-        }
+
+        } catch (e) {
+            alert('algo salio mal')
+            errorEntrando =true;
+        }
     }
 
+    //nombre = "";
+    //edad = ";"
 });
 
 // Función diasHastaReyes()

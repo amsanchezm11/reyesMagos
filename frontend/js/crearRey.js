@@ -1,7 +1,6 @@
-let nombre = document.getElementById("nombre");
-function checkNombre(element) {
+function checkNombreRey(element) {
 
-    let regex = /^(Melchor|Gaspar|Baltasar)$/;
+    let regex = /^(Melchor|Gaspar|Baltasar)$/; 
     return comprobarRegex(element, regex);
     // Texto Admite --> Los valores Melchor | Gaspar | Baltasar 
 }
@@ -21,13 +20,13 @@ function comprobarRegex(element, regex) {
 document.getElementById("crearRey").addEventListener("click", checkInputs);
 function checkInputs() {
 
-    let aviso = document.getElementById("aviso");
-    let nombre = document.getElementById("nombre").value;
+    let aviso = document.getElementById("avisoRey");
+    let nombre = document.getElementById("nombreRey");
     let todoOk = false;
 
-    todoOk = checkNombre(nombre);
+    todoOk = checkNombreRey(nombre);
     
-    if (nombre.className == "rojo") {
+    if (!todoOk) {
         aviso.classList.remove("avisoV");
         aviso.classList.add("avisoR");
         aviso.innerHTML = "";
@@ -35,25 +34,20 @@ function checkInputs() {
     } else {
         aviso.classList.remove("avisoR");
         aviso.classList.add("avisoV");
-        // MENSAJE DE QUE SE HA AÑADIDO CORRECTAMENTE
+        // Mensaje de que se ha añadido correctamente
         aviso.innerHTML = "";
-        aviso.innerHTML = "Rey añadido correctamente.";
-        // RESETEAMOS LOS VALORES DE LOS INPUTS
-        nombre.value = "";        
-        // RESETEO LAS CLASES DE LOS INPUTS PARA QUE NO SE LE QUEDE EL COLOR VERDE DEL BORDER
-        nombre.className = "";        
+        aviso.innerHTML = "Rey añadido correctamente.";      
     }
     return todoOk;
 }
 
 document.getElementById("crearRey").addEventListener("click", async (event) => {
     event.preventDefault();
-    console.log("Entrando en la funcion");
-    console.log(checkInputs());
+  
     // Si los inputs son correctos ingresamos el usuario en la BD
     if (checkInputs()) {
-        console.log(checkInputs());
-        let nombre = document.getElementById("nombre").value;
+        
+        let nombre = document.getElementById("nombreRey").value;
   
         try {
            

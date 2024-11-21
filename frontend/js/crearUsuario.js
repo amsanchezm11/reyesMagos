@@ -24,7 +24,6 @@ function comprobarRegex(element, regex) {
 }
 
 
-//document.getElementById("crear").addEventListener("click", checkInputs);
 function checkInputs() {
     let nombre = document.getElementById("nombre");
     let edad = document.getElementById("edad");

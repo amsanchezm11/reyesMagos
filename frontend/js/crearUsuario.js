@@ -105,6 +105,7 @@ document.getElementById("crear").addEventListener("click", async (event) => {
                 })
             });
 
+            window.location.href = "../html/listaVista.html";
             /*data = await response.json();
             console.log(data);*/
 

@@ -175,8 +175,7 @@ button:hover,a:hover {
 
 .acciones{
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: center;
 }
 
 #h1-lista{

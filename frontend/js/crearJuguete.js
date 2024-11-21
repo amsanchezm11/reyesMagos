@@ -1,12 +1,12 @@
-function checkNombreRey(element) {
+function checkNombreJuguete(element) {
 
-    let regex = /^(Melchor|Gaspar|Baltasar)$/; 
+    let regex = /^[A-Za-z ]{1,20}$/;
     return comprobarRegex(element, regex);
     // Texto Admite --> Los valores Melchor | Gaspar | Baltasar 
 }
 
 function comprobarRegex(element, regex) {
-   // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
+    // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
     if (regex.test(element.value)) {
         element.setAttribute("class", "verde");
         return true;
@@ -17,48 +17,52 @@ function comprobarRegex(element, regex) {
 }
 
 
-document.getElementById("crearRey").addEventListener("click", checkInputs);
+//document.getElementById("crearRey").addEventListener("click", checkInputs);
 function checkInputs() {
 
     let aviso = document.getElementById("avisoJuguete");
     let nombre = document.getElementById("nombreJuguete");
     let todoOk = false;
 
-    todoOk = checkNombreRey(nombre);
-    
+    console.log(nombre);
+    //console.log(imagen);
+    todoOk = checkNombreJuguete(nombre);
+
     if (!todoOk) {
         aviso.classList.remove("avisoV");
         aviso.classList.add("avisoR");
         aviso.innerHTML = "";
-        aviso.innerHTML = "Nombre Incorrecto. Prueba (Melchor|Gaspar|Baltasar).";       
+        aviso.innerHTML = "Nombre Incorrecto. Prueba (Melchor|Gaspar|Baltasar).";
     } else {
         aviso.classList.remove("avisoR");
         aviso.classList.add("avisoV");
         // Mensaje de que se ha añadido correctamente
         aviso.innerHTML = "";
-        aviso.innerHTML = "Rey añadido correctamente.";      
+        aviso.innerHTML = "Juguete añadido correctamente.";
     }
     return todoOk;
 }
 
 document.getElementById("crearJuguete").addEventListener("click", async (event) => {
     event.preventDefault();
-  
+
     // Si los inputs son correctos ingresamos el usuario en la BD
     if (checkInputs()) {
-        
+
         let nombre = document.getElementById("nombreJuguete").value;
-        let imagen = document.getElementById("imagenJuguete").value;
-  
+        let imagen = document.getElementById("imagen").value;
+
+        imagen = imagen.split("\\").pop();
+
         try {
-           
+
             const response = await fetch("http://127.0.0.1:8000/juguetes/", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    nombre
+                    nombre, imagen
                 })
             });
 
@@ -67,27 +71,15 @@ document.getElementById("crearJuguete").addEventListener("click", async (event) 
 
         } catch (e) {
             alert('Algo salio mal')
-        }
+        }
     }
 
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Función para modificar el estilo del type file
-document.getElementById('imagen').addEventListener('change', function() {
-    let label = document.querySelector('.input-file-label');
+document.getElementById("imagen").addEventListener("change", function () {
+    let label = document.querySelector(".input-file-label");
     let fileName = this.files[0] ? this.files[0].name : "Seleccionar imagen";
     label.textContent = fileName;
     label.classList.add("selected");
@@ -100,11 +92,11 @@ function diasHastaReyes() {
     let hoy = new Date(); // Fecha actual
     let diaDeReyes = new Date(2025, 0, 6);
     // Calculamos la diferencia(nos la da en ms)
-    let diferenciaMilisegundos = diaDeReyes - hoy;    
+    let diferenciaMilisegundos = diaDeReyes - hoy;
     // Convertimos la diferencia a días
     let diasRestantes = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-    
-    document.getElementById("reyes").title= `Faltan ${diasRestantes} días para reyes`;
+
+    document.getElementById("reyes").title = `Faltan ${diasRestantes} días para reyes`;
 }
 // Llamamos a la función diasHastaReyes()
 diasHastaReyes();

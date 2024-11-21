@@ -95,7 +95,7 @@ def get_rey_mago(nombre: str, db: Session = Depends(get_db)):
     return rey_mago
 
 
-@app.delete("/usuarios/{usuario_id}")
+@app.delete("/reyes_magos/{usuario_id}")
 def eliminar_rey_mago(usuario_id: int, db: Session = Depends(get_db)):
     try:
         rey_eliminado = crud.delete_rey_mago(db, usuario_id)

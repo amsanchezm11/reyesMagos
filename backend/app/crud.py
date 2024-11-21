@@ -59,7 +59,7 @@ def get_reyes_magos(db: Session, skip: int = 0, limit: int = 10):
 def delete_rey_mago(db: Session, rey_id: int):
     try:
         # Buscar al rey en la base de datos usando su id
-        rey = db.query(ReyMago).filter(Usuario.id == rey_id).first()
+        rey = db.query(ReyMago).filter(ReyMago.id == rey_id).first()
 
         # Si no se encuentra el rey, lanzamos una excepción
         if rey is None:

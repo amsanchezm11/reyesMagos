@@ -32,7 +32,7 @@ function checkInputs() {
         aviso.classList.remove("avisoV");
         aviso.classList.add("avisoR");
         aviso.innerHTML = "";
-        aviso.innerHTML = "Nombre Incorrecto. Prueba (Melchor|Gaspar|Baltasar).";
+        aviso.innerHTML = "Longitud máxima del texto 20";
     } else {
         aviso.classList.remove("avisoR");
         aviso.classList.add("avisoV");

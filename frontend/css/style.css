@@ -141,7 +141,8 @@ input {
     font-size: 1rem;
 }
 
-button,a {
+button,
+a {
     background-color: #d4af37;
     border: none;
     padding: 10px 20px;
@@ -153,43 +154,46 @@ button,a {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-button:hover,a:hover {
+button:hover,
+a:hover {
     background-color: #b8860b;
     transform: scale(1.1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 
-#lista{
+#lista {
     color: #000;
     font-size: 1.5rem;
 }
 
-#lista td,tr,th{
+#lista td,
+tr,
+th {
     text-align: center;
 }
 
-.acciones{
+.acciones {
     display: flex;
     justify-content: center;
 }
 
-#h1-lista{
+#h1-lista {
     margin-bottom: 20px;
 }
 
-.enlace-lista{
+.enlace-lista {
     display: flex;
     justify-content: center;
     margin-top: 30px;
     margin-bottom: 50px;
 }
 
-.formulario-principal{
+.formulario-principal {
     padding: 30px;
     border-radius: 15px;
     background-color: white;
@@ -200,32 +204,42 @@ button:hover,a:hover {
 
 }
 
-.formulario-principal div{
+.formulario-principal div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.formulario-principal img{
+.formulario-principal img {
     width: 100px;
     height: 100px;
 }
 
-.formulario-principal a{
+.formulario-principal a {
     margin-top: -10px;
 }
 
-.h2{
+.h2 {
     color: #d4af37;
 }
 
-.container-inputs{
+.container-inputs {
     display: flex;
     flex-direction: column;
 }
 
-.container-inputs div{
+.container-carta {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px 40px;
+    text-align: center;
+    max-width: 400px;
+    width: max-content;
+}
+
+.container-inputs div {
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -233,24 +247,42 @@ button:hover,a:hover {
     align-items: center;
     color: #d4af37;
     font-size: 1.5rem;
+    
 }
 
 
+.container-buscar {
+    width: 300px;
+}
 
+.container-buscar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
 
-
-
-
+input::placeholder{
+    width: 100%;
+}
 
 .input-file-input {
-    display: none; /* Esconde el input real */
+    display: none;
 }
 
-/* Estilo para el botón personalizado */
+select{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #d4af37;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
 .input-file-label {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #d4af37; /* Dorado */
+    background-color: #d4af37;
     border-bottom: 4px solid #b8860b;
     color: white;
     border-radius: 5px;
@@ -260,16 +292,47 @@ button:hover,a:hover {
     font-size: 1rem;
 }
 
-/* Efecto al pasar el mouse */
 .input-file-label:hover {
-    background-color: #b8860b; /* Dorado más oscuro */
+    background-color: #b8860b;
     transform: scale(1.05);
 }
 
-/* Para mostrar cuando el archivo esté seleccionado */
 .selected {
-   font-weight: bold;
+    font-weight: bold;
     color: white;
     background-color: #4caf50;
     border-bottom: 4px solid #013220;
+}
+
+.main-carta{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
+.container-cartaReyes{
+    background-color: burlywood;
+    width: 500px;
+    max-height: 600px;
+    min-height: 600px; 
+    overflow-y: auto; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.container-cartaReyes p{
+    color: black;
+    font-family: cursive;
+    font-weight: bold;
+}
+
+.titulo-carta{
+    margin-bottom: 20px;
 }

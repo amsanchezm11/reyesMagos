@@ -175,11 +175,13 @@ a:hover {
 tr,
 th {
     text-align: center;
+    color: #000;
 }
 
 .acciones {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 5px;
 }
 
 #h1-lista {

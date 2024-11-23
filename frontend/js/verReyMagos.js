@@ -2,12 +2,13 @@
 window.addEventListener("load", async (event) => {
     event.preventDefault();
 
-    const lista = await obtenerUsuarios("http://127.0.0.1:8000/usuarios/");
+    const lista = await obtenerReyes("http://127.0.0.1:8000/reyes_magos/");
     rellenarTabla(lista);
 });
 
+
 // Función obtener usuarios
-async function obtenerUsuarios(url) {
+async function obtenerReyes(url) {
     try {
         const response = await fetch(url, {
             method: "GET",
@@ -34,15 +35,16 @@ async function obtenerUsuarios(url) {
     }
 }
 
+
 /*  Función crear tabla
     ¿Qué hace? --> Obtiene el elemento(div) con el id "lista" que es el elemento que va a contener la tabla
                    Se crea la tabla con thead y tbody y con la cabecera configurada  */
 function crearTabla() {
     // Obtenemos la lista
-    let lista = document.getElementById("lista");
+    let lista = document.getElementById("listaReyes");
     // Creamos el elemento tabla y le asignamos su id y la clase ue va a tener
     let tabla = document.createElement("table");
-    tabla.id = "listaUsuarios";
+    tabla.id = "listaReyes";
     tabla.classList.add("container-tabla");
     /* Creamos los elementos thead y tbody, éste ultimo con su id que lo usaremos 
     para rellenar filas en el método rellenarTabla()*/
@@ -52,56 +54,43 @@ function crearTabla() {
     // Creamos la fila que va a ir en la cabecera junto a sus th que van a ser los titulos de cada columna
     let filaHead = document.createElement("tr");
     let nombre = document.createElement("th");
-    nombre.innerHTML = "Nombre";
-    let edad = document.createElement("th");
-    edad.innerHTML = "Edad";
+    nombre.innerHTML = "Rey Mago";
     let acciones = document.createElement("th");
     acciones.innerHTML = "Acciones";
     // Agregamos los elementos hijos a los elementos padres
-    filaHead.append(nombre, edad, acciones);
+    filaHead.append(nombre, acciones);
     tHead.appendChild(filaHead);
     tabla.append(tHead, tBody);
     lista.appendChild(tabla);
 
 }
 
+
 /* Función rellenarTabla()
     ¿Que hace? --> Obtiene el elemento tbody de la tabla y por cada usuario que hay en el array de usuarios
                    va creando y añadiendo una fila con todos los datos del usuario junto a los botones de acciones */
-function rellenarTabla(usuarios) {
+function rellenarTabla(reyes) {
     // Obtenemos el elemento tabla
     let tablaBody = document.getElementById("tBody");
     // Por cada usuario creamos una nueva fila en la tabla
-    usuarios.forEach(usuario => {
+    reyes.forEach(rey => {
         // Creamos el elemento(fila) que irá en la tabla
         let fila = document.createElement("tr");
         // Creamos el elemento(td) usuario
-        let usuarioNombre = document.createElement("td");
-        usuarioNombre.innerHTML = `${usuario.nombre}`;
-        let usuarioEdad = document.createElement("td");
-        usuarioEdad.innerHTML = `${usuario.edad}`;
+        let reyNombre = document.createElement("td");
+        reyNombre.innerHTML = `${rey.nombre}`;
+
         // Creamos el elemento(td) botones
         let botones = document.createElement("td");
         botones.classList.add("acciones");
-        // Creamos los 3 botones (aniadir / ver / borrar) y le asignamos ids dinámicos
-        // let aniadirCarta = document.createElement("button");
-        // aniadirCarta.id = `${usuario.nombre}Aniadir`;
-        // aniadirCarta.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-        let crearCarta = document.createElement("a");
-        crearCarta.id = `${usuario.nombre}Carta`;
-        crearCarta.innerHTML = `<i class="fa-solid fa-file"></i>`;
-        crearCarta.title = "Crear carta";
-        crearCarta.href = "../html/crearCarta.html";
-
-
         // Boton borrar usuario
-        let borrarUsuario = document.createElement("button");
-        borrarUsuario.id = `${usuario.nombre}Borrar`;
-        borrarUsuario.innerHTML = `<i class="fa-solid fa-x"></i>`;
-        borrarUsuario.title = "Borrar usuario";
-        borrarUsuario.addEventListener("click", async () => {
+        let borrarRey = document.createElement("button");
+        borrarRey.id = `${rey.nombre}Borrar`;
+        borrarRey.innerHTML = `<i class="fa-solid fa-x"></i>`;
+        borrarRey.title = "Borrar rey mago";
+        borrarRey.addEventListener("click", async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/usuarios/${usuario.id}`, {
+                const response = await fetch(`http://127.0.0.1:8000/reyes_magos/${rey.id}`, {
                     method: "DELETE",
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,7 +100,7 @@ function rellenarTabla(usuarios) {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 } else {
-                    alert(`Usuario ${usuario.nombre} eliminado con éxito`)
+                    alert(`Rey ${rey.nombre} eliminado con éxito`)
                     fila.remove();
                 }
 
@@ -123,15 +112,15 @@ function rellenarTabla(usuarios) {
             }
         });
 
-
-
-        botones.append(crearCarta, borrarUsuario);
+        botones.appendChild(borrarRey);
         // Añadimos al td botones los 3 botones aniadir,ver y borrar
-        fila.append(usuarioNombre, usuarioEdad, botones);
+        fila.append(reyNombre, botones);
         // Añadimos la nueva fila a la tabla
         tablaBody.appendChild(fila);
     });
 }
+
+
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025

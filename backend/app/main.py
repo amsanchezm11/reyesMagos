@@ -169,24 +169,28 @@ def get_cartas(db: Session = Depends(get_db)):
 def get_cartas_por_usuario(id: str, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(
         Usuario.id == id).first()
-    carta = db.query(Carta).filter(
-        Carta.usuario == usuario).first()
-    response_data = {
-        "id": carta.id,
-        "usuario_id": carta.usuario_id,
-        "rey_mago_id": carta.rey_mago_id,
-        # Agregar los IDs de los juguetes
-        "juguetes_ids": [{"id": j.id, "nombre": j.nombre, "imagen": j.imagen} for j in carta.juguetes]
-    }
+    cartas = db.query(Carta).filter(
+        Carta.usuario == usuario)
+    response_data ={'result': []}
+    for carta in cartas:
+        
+        response_data['result'].append({
+            "id": carta.id,
+            "usuario_id": carta.usuario_id,
+            "rey_mago_id": carta.rey_mago_id,
+            # Agregar los IDs de los juguetes
+            "juguetes_ids": [{"id": j.id, "nombre": j.nombre, "imagen": j.imagen} for j in carta.juguetes]
+        })
     if carta is None:
         raise HTTPException(status_code=404, detail="Juguete no encontrado")
     return response_data
 
 
+
 @app.delete("/cartas/{carta_id}")
 def eliminar_carta(carta_id: int, db: Session = Depends(get_db)):
     try:
-        carta_eliminada = crud.delete_juguete(db, carta_id)
+        carta_eliminada = crud.delete_carta(db, carta_id)
         return {"msg": f"Carta con ID {carta_id} ha sido eliminado", "Carta": carta_eliminada}
     except NoResultFound:
         raise HTTPException(status_code=404, detail="carta no encontrado")

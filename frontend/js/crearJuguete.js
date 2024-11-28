@@ -1,6 +1,6 @@
 function checkNombreJuguete(element) {
 
-    let regex = /^[A-Za-z ]{1,20}$/;
+    let regex = /^[A-Za-z0-9 ]{1,20}$/;
     return comprobarRegex(element, regex);
     // Texto Admite --> Los valores Melchor | Gaspar | Baltasar 
 }

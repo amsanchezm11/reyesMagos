@@ -1,10 +1,19 @@
+/* Función checkNombreJuguete
+   ¿Qué hace? --> Configura la regex y llama a la función comprobarRegex()
+   Parámetros --> Valor del input(element)
+   Devuelve --> True/False
+*/
 function checkNombreJuguete(element) {
 
     let regex = /^[A-Za-z0-9 ]{1,20}$/;
     return comprobarRegex(element, regex);
-    // Texto Admite --> Los valores Melchor | Gaspar | Baltasar 
+    // Texto Admite --> Texto y números con un rango máximo de 20 caracteres
 }
-
+/* Función comprobarRegex
+   ¿Qué hace? --> Comprueba que el input cumple las condiciones de la regex
+   Parámetros --> Valor del input(element) y la regex a comprobar(regex)
+   Devuelve --> True/False
+*/
 function comprobarRegex(element, regex) {
     // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
     if (regex.test(element.value)) {
@@ -16,8 +25,10 @@ function comprobarRegex(element, regex) {
     }
 }
 
-
-//document.getElementById("crearRey").addEventListener("click", checkInputs);
+/* Función checkInputs
+   ¿Qué hace? --> Comprueba que todos los inputs del formulario estén bien
+   Devuelve --> True/False
+*/
 function checkInputs() {
 
     let aviso = document.getElementById("avisoJuguete");
@@ -42,7 +53,9 @@ function checkInputs() {
     }
     return todoOk;
 }
-
+/* Función crearJuguete
+   ¿Qué hace? --> Si todos los inputs del formularios estan correctamente almacena el juguete en la bbdd
+*/
 document.getElementById("crearJuguete").addEventListener("click", async (event) => {
     event.preventDefault();
 
@@ -65,10 +78,6 @@ document.getElementById("crearJuguete").addEventListener("click", async (event) 
                     nombre, imagen
                 })
             });
-
-            /*data = await response.json();
-            console.log(data);*/
-
         } catch (e) {
             alert('Algo salio mal')
         }
@@ -76,8 +85,9 @@ document.getElementById("crearJuguete").addEventListener("click", async (event) 
 
 });
 
-
-// Función para modificar el estilo del type file
+/* Función modificarEstiloInputArchivo()
+   ¿Qué hace? --> Modifica el estilo del input de tipo file, mostrando el nombre del archivo seleccionado
+ */
 document.getElementById("imagen").addEventListener("change", function () {
     let label = document.querySelector(".input-file-label");
     let fileName = this.files[0] ? this.files[0].name : "Seleccionar imagen";
@@ -85,9 +95,9 @@ document.getElementById("imagen").addEventListener("change", function () {
     label.classList.add("selected");
 });
 
-
-// Función diasHastaReyes()
-// ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025
+/* Función diasHastaReyes()
+   ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025
+*/
 function diasHastaReyes() {
     let hoy = new Date(); // Fecha actual
     let diaDeReyes = new Date(2025, 0, 6);

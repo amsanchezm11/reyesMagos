@@ -58,6 +58,7 @@ async function obtenerCartas(url) {
         // Validar si la respuesta es un array
         if (Array.isArray(data)) {
             return data;
+           
         } else {
             throw new Error("El formato de la respuesta no es un array.");
         }
@@ -79,34 +80,34 @@ function rellenarOptionUsuario(usuarios) {
     });
 
     select.addEventListener("change", async () => {
-        
-            let usuarioId = select.value;
 
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/cartas/${usuarioId}`, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-        
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-        
-                const data = await response.json();
-                console.log("cartas en completarTabla:", data);
-                // Validar si la respuesta es un array
-                if (data.result && Array.isArray(data.result)) {
-                    completarTabla(data.result);
-                } else {
-                    console.error("data.result no es un array válido:", data.result);
-                    throw new Error("El formato de la respuesta no es correcto.");
-                }
-            } catch (error) {
-                console.error("Error al obtener los resultados:", error);
-                return []; // Retorna un array vacío en caso de error
+        let usuarioId = select.value;
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/cartas/${usuarioId}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const data = await response.json();
+            console.log("cartas en completarTabla:", data);
+            // Validar si la respuesta es un array
+            if (data.result && Array.isArray(data.result)) {
+                completarTabla(data.result);
+            } else {
+                console.error("data.result no es un array válido:", data.result);
+                throw new Error("El formato de la respuesta no es correcto.");
+            }
+        } catch (error) {
+            console.error("Error al obtener los resultados:", error);
+            return []; // Retorna un array vacío en caso de error
+        }
     });
 }
 
@@ -137,19 +138,25 @@ async function obtenerRey(reyId) {
 // Función rellenar select del usuarios
 
 async function completarTabla(cartas) {
-   
+
     //let select = document.getElementById("usuarioVerCarta");
     let tBody = document.getElementById("tBody");
-    for (const carta of cartas) {
-        let fila = document.createElement("tr");
 
+    if (tBody.hasChildNodes()) {
+        tBody.innerHTML = "";
+    }
+
+    for (let carta of cartas) {
+        let fila = document.createElement("tr");
+        fila.classList.add("obtener-lista");
         // Columna: ID de la carta
         let cartaNombre = document.createElement("td");
         cartaNombre.innerHTML = `Carta ${carta.id}`;
 
         // Columna: Nombre del Rey Mago
         let reyMago = document.createElement("td");
-        let nombreRey = await obtenerRey(carta.rey_mago_id); // Llama a obtenerRey con await
+        reyMago.classList.add("nombreRey");
+        let nombreRey = await obtenerRey(carta.rey_mago_id);
         reyMago.innerHTML = nombreRey;
 
         // Columna: Número de juguetes
@@ -162,18 +169,153 @@ async function completarTabla(cartas) {
 
         let borrarCarta = document.createElement("button");
         borrarCarta.innerHTML = "✖️";
+        borrarCarta.id = `eliminar${carta.id}`;
+        borrarCarta.addEventListener("click", async () => {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/cartas/${carta.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                    
+                } else {
+                    alert(`Carta ${carta.id} eliminada con éxito`)
+                    fila.remove();
+                }
+
+                console.log(`Elemento con ID ${id} eliminado correctamente.`);
+                return true;
+            } catch (error) {
+                console.error("Error al borrar el elemento:", error);
+                return false;
+            }
+        });
 
         let verCarta = document.createElement("button");
         verCarta.innerHTML = "🔍";
-
+        verCarta.href = "#cartaAbajo";
+        verCarta.id = `ver${carta.usuario_id}`;
+        verCarta.addEventListener("click", obtenerUsuarioNombre);
+        verCarta.addEventListener("click", obtenerNombreRey);
+        verCarta.addEventListener("click", obtenerJuguetes);
         contenedorBotones.append(borrarCarta, verCarta);
-
-        // Añadir las columnas a la fila
         fila.append(cartaNombre, reyMago, numJuguetes, contenedorBotones);
-
-        // Añadir la fila al cuerpo de la tabla
         tBody.appendChild(fila);
     }
+}
+
+async function obtenerUsuarioNombre(event) {
+
+    let elemento = event.target.id;
+    let userId = elemento.replace("ver", "");
+    let idUsuario = parseInt(userId);
+    console.log(userId);
+  
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/usuarios/`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let nombreUser = data.find(user => user.id === idUsuario).nombre; 
+        let edadUser = data.find(user => user.id === idUsuario).edad; 
+        let nombreCartaUser = document.getElementById("nombreCarta");
+        nombreCartaUser.innerHTML = `${nombreUser}`;
+        console.log("nombre usuario:", nombreUser);
+        let edadCartaUser = document.getElementById("edadCarta");
+        edadCartaUser.innerHTML = `${edadUser}`;
+
+    } catch (error) {
+        console.error("Error al obtener los resultados:", error);
+        return []; // Retorna un array vacío en caso de error
+    }
+  
+}
+
+async function obtenerNombreRey(event) {
+
+    let elemento = event.target;
+    console.log(event.target);
+   // let userId = elemento.replace("ver", "");
+    //let idUsuario = parseInt(userId);
+    //console.log(userId);
+  
+    let nombreRey = elemento.closest(".obtener-lista");
+    let nodoNombreRey = nombreRey.querySelector(".nombreRey");
+
+    console.log(nombreRey);
+    console.log(nodoNombreRey);
+    console.log();
+    let nombreReyCarta = document.getElementById("reyCarta");
+    nombreReyCarta.innerHTML = `${nodoNombreRey.textContent}`;
+}
+
+async function obtenerJuguetes(event) {
+    
+    let idUsuario = event.target.id;
+    let userId = idUsuario.replace("ver", "");
+    let id = parseInt(userId);
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("cartas en completarTabla2:", data.result[0].juguetes_ids);
+        // Validar si la respuesta es un array
+        if (data.result && Array.isArray(data.result)) {
+
+            let juguetes = data.result[0].juguetes_ids;
+            let contenedorJuguetes = document.getElementById("juguetesPedidos");
+            if (contenedorJuguetes.hasChildNodes) {
+                contenedorJuguetes.innerHTML = "";
+            }
+
+            let tabla = document.createElement("table");
+            contenedorJuguetes.appendChild(tabla);
+
+            juguetes.forEach(juguete => {
+                let fila = document.createElement("tr");
+                fila.classList.add("fila-carta");
+                let contenedorImg = document.createElement("td");
+                let img = document.createElement("img");
+                img.src = `../img/${juguete.imagen}`;
+                img.classList.add("imagen-juguete");
+                contenedorImg.appendChild(img);
+                let contendorNombre = document.createElement("td");
+                contendorNombre.innerHTML = `${juguete.nombre}`;
+                fila.append(img,contendorNombre);
+                tabla.appendChild(fila);
+            });
+
+        } else {
+            console.error("data.result no es un array válido:", data.result);
+            throw new Error("El formato de la respuesta no es correcto.");
+        }
+    } catch (error) {
+        console.error("Error al obtener los resultados:", error);
+        return []; // Retorna un array vacío en caso de error
+    }
+
 }
 
 
@@ -203,7 +345,7 @@ function crearTabla() {
     let acciones = document.createElement("th");
     acciones.innerHTML = "Acciones";
     // Agregamos los elementos hijos a los elementos padres
-    filaHead.append(carta,reyMago,cantidadJuguetes, acciones);
+    filaHead.append(carta, reyMago, cantidadJuguetes, acciones);
     tHead.appendChild(filaHead);
     tabla.append(tHead, tBody);
     lista.appendChild(tabla);
@@ -211,14 +353,15 @@ function crearTabla() {
 }
 
 
+
+
+
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025
 function diasHastaReyes() {
     let hoy = new Date(); // Fecha actual
     let diaDeReyes = new Date(2025, 0, 6);
-    // Calculamos la diferencia(nos la da en ms)
     let diferenciaMilisegundos = diaDeReyes - hoy;
-    // Convertimos la diferencia a días
     let diasRestantes = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
 
     document.getElementById("reyes").title = `Faltan ${diasRestantes} días para reyes`;
@@ -227,3 +370,5 @@ function diasHastaReyes() {
 diasHastaReyes();
 // Llamamos a las funciones crearTabla() y rellenarTabla()
 crearTabla();
+// Le ponemos un titulo informativo al boton ordenar
+document.getElementById("botonOrdenar").title = "Ordenar tabla";

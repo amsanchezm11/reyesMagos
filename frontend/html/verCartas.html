@@ -12,26 +12,45 @@
     <header>
         <img id="reyes" src="../img/calendario.png" class="calendario-reyes"></img>
     </header>
-    <main class="juguete-pos">
-        <h1 id="h1-lista">Cartas por Usuario</h1>
-        <div class="container-usu-orden">
-            <div class="container-usuarios">
-                <label for="usuarioCarta">Usuario:</label>
-                <select name="usuarioCarta" id="usuarioVerCarta">
-                    <option value="" selected disabled>Usuario</option>
-                </select>
+    <main class="carta-pos">
+        <div>
+            <h1 id="h1-lista">Cartas por Usuario</h1>
+            <div class="container-usu-orden">
+                <div class="container-usuarios">
+                    <label for="usuarioCarta">Usuario:</label>
+                    <select name="usuarioCarta" id="usuarioVerCarta">
+                        <option value="" selected disabled>Usuario</option>
+                    </select>
+                </div>
+                <button name="ordenar" id="botonOrdenar">
+                    <i class="fa-solid fa-sort" title="Ordenar lista"></i>
+                </button>
             </div>
-            <button name="ordenar" id="botonOrdenar">
-                <i class="fa-solid fa-sort" title="Ordenar lista"></i>
-            </button>
+              
+            <div id="listaCartas" class="lista-cartas"></div>
+    
+            <div class="enlace-lista">
+                <a href="../index.html">Men&uacute; Principal</a>
+            </div>
         </div>
-       
         
-        <div id="listaCartas" class="lista-cartas"></div>
 
-        <div class="enlace-lista">
-            <a href="../index.html">Men&uacute; Principal</a>
+        <div class="container-cartaReyes">
+            <div id="juguetesCarta">
+                <div class="titulo-carta">
+                    <p>Querido rey mago <span id="reyCarta">$nombreRey</span></p>
+                    <p>Soy <span id="nombreCarta">$nombre</span> y tengo <span id="edadCarta">$edad</span> a&ntilde;os. Me gustar&iacute;a:</p>
+                </div>
+                <div id="juguetesPedidos">
+                </div> 
+                <div>
+                    <p>Muchas Gracias.</p>
+                   </div>
+
+            </div>
         </div>
     </main>
+    
+
 </body>
 </html>

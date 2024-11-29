@@ -49,8 +49,7 @@ document.getElementById("crearRey").addEventListener("click", async (event) => {
         
         let nombre = document.getElementById("nombreRey").value;
   
-        try {
-           
+        try {          
             const response = await fetch("http://127.0.0.1:8000/reyes_magos/", {
                 method: "POST",
                 headers: {
@@ -60,19 +59,12 @@ document.getElementById("crearRey").addEventListener("click", async (event) => {
                     nombre
                 })
             });
-
-            /*data = await response.json();
-            console.log(data);*/
-
         } catch (e) {
             alert('Algo salio mal')
         }
     }
 
 });
-
-
-
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025

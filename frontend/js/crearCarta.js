@@ -1,18 +1,25 @@
+// Array global donde se va a almacenar los juguetes(Aconsejado por el profesor)
 let juguetes = [];
 
-// Ejecutamos la función al cargar la página
+/*  Función obtenerUsuarios()
+    ¿Qué hace? --> Al cargar la página obtiene la lista de usuarios y reyes de la bbdd y los almacena 
+                   en los selects correspondiente del formulario
+*/ 
 window.addEventListener("load", async (event) => {
     event.preventDefault();
 
     const listaUsuarios = await obtenerUsuarios("http://127.0.0.1:8000/usuarios/");
-    const listaReyes = await obtenerJuguetes("http://127.0.0.1:8000/reyes_magos/");
+    const listaReyes = await obtenerReyes("http://127.0.0.1:8000/reyes_magos/");
 
     rellenarOptionUsuario(listaUsuarios);
     rellenarOptionReyes(listaReyes);
 
 });
 
-// Función obtener usuarios
+/*  Función obtenerUsuarios()
+    ¿Qué hace? --> Obtiene la lista de usuarios de la bbdd
+    Parámetros --> Url de la API
+*/ 
 async function obtenerUsuarios(url) {
     try {
         const response = await fetch(url, {
@@ -40,8 +47,11 @@ async function obtenerUsuarios(url) {
     }
 }
 
-// Función obtener reyes
-async function obtenerJuguetes(url) {
+/*  Función obtenerReyes()
+    ¿Qué hace? --> Obtiene la lista de reyes de la bbdd
+    Parámetros --> Url de la API
+*/ 
+async function obtenerReyes(url) {
     try {
         const response = await fetch(url, {
             method: "GET",
@@ -56,7 +66,6 @@ async function obtenerJuguetes(url) {
 
         const data = await response.json();
 
-        // Validar si la respuesta es un array
         if (Array.isArray(data)) {
             return data;
         } else {
@@ -64,10 +73,14 @@ async function obtenerJuguetes(url) {
         }
     } catch (error) {
         console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
+        return []; 
     }
 }
-// Función rellenar select del usuarios
+
+/*  Función rellenarOptionUsuario()
+    ¿Qué hace? --> Por cada usuario en la lista proporcionada crea un option y lo añade al select correspondiente.
+    Parámetros --> Lista de usuarios de la bbdd.
+*/ 
 function rellenarOptionUsuario(usuarios) {
     let select = document.getElementById("selectorUsu");
 
@@ -79,7 +92,11 @@ function rellenarOptionUsuario(usuarios) {
     });
 }
 
-// Función de rellenar select de reyes
+
+/*  Función rellenarOptionReyes()
+    ¿Qué hace? --> Por cada rey en la lista proporcionada crea un option y lo añade al select correspondiente.
+    Parámetros --> Lista de reyes de la bbdd.
+*/ 
 function rellenarOptionReyes(reyes) {
     let select = document.getElementById("selectorRey");
 
@@ -91,8 +108,11 @@ function rellenarOptionReyes(reyes) {
     });
 }
 
-
-// Función mostar usuario elegido
+/*  Función mostrarUsuario()
+    ¿Qué hace? --> Coge el valor elegido por el usuario lo divide(Nombre/edad) y lo muestra en un elemento con 
+                   id "nombreCarta" y en otro elemento con id "edadCarta".
+    Parámetros --> Valor del select que contiene el nombre del rey seleccionado por el usuario(event).
+*/ 
 document.getElementById("selectorUsu").addEventListener("change", mostrarUsuario);
 function mostrarUsuario(event) {
 
@@ -102,20 +122,26 @@ function mostrarUsuario(event) {
     document.getElementById("edadCarta").innerHTML = parseInt(datos[1]);
 }
 
-// Función mostrar rey elegido
+/*  Función mostrarRey()
+    ¿Qué hace? --> Coge el valor elegido por el usuario y lo muestra en un elemento con el id "reyCarta".
+    Parámetros --> Valor del select que contiene el nombre del rey seleccionado por el usuario(event).
+*/ 
 document.getElementById("selectorRey").addEventListener("change", mostrarRey);
 function mostrarRey(event) {
 
     let rey = event.target.value;
-    console.log(rey);
     document.getElementById("reyCarta").innerHTML = rey;
 }
 
-
-
-// Función buscarJuguetes
+/* Función buscarJuguetes()
+   ¿Qué hace? --> oma el valor ingresado por 
+   el usuario, obtiene los juguetes de la bbdd que coinciden con ese valor, y muestra los resultados.
+   Si no hay texto en el input search, limpia los resultados.
+   Parámetros --> El valor que el usuario ha escrito en el formulario(event).
+*/
 document.getElementById("buscarJuguete").addEventListener("input", buscarJuguetes);
 async function buscarJuguetes(event) {
+    // Creamos una sentencia para muestre solo los que el usuario ha elegido
     const sentencia = event.target.value.trim();
 
     if (sentencia.length === 0) {
@@ -138,8 +164,6 @@ async function buscarJuguetes(event) {
 
         const juguetes = await response.json();
 
-        // Mostrar los resultados en la página
-        //mostrarResultadosJuguetes(juguetes);
         mostrarResultadosJuguetes(juguetes, `${sentencia}`);
     } catch (error) {
         console.error("Error al buscar juguetes:", error);
@@ -147,8 +171,12 @@ async function buscarJuguetes(event) {
     }
 }
 
-
-// Función mostrar los resultados de los juguetes con filtro
+/* Función mostrarResultadosJuguetes()
+   ¿Qué hace? --> Muestra todos los juguetes según el valor del input tipo search
+   Parámetros --> El array de juguetes que se obtiene de la bbdd(juguetes) y un filtro(opcional) que utiliza 
+                  el contenido del input search para filtrar los resultados de los juguetes por su nombre. 
+                  Si no se proporciona, el filtro estará vacío y no mostrará ningún juguete.
+*/
 function mostrarResultadosJuguetes(juguetes, filtro = '') {
     let contenedorResultados = document.getElementById("resultadoJuguetes");
     contenedorResultados.innerHTML = "";
@@ -166,7 +194,6 @@ function mostrarResultadosJuguetes(juguetes, filtro = '') {
         return;
     }
 
-    // Crear una lista de resultados
     juguetesFiltrados.forEach(juguete => {
         let img = document.createElement("img");
         img.src = `../img/${juguete.imagen}`;
@@ -178,13 +205,6 @@ function mostrarResultadosJuguetes(juguetes, filtro = '') {
         botonAniadir.classList.add("boton-aniadir");
         botonAniadir.value = `${juguete.id}`;
         botonAniadir.innerHTML = "+";
-       // botonAniadir.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-        //let icono = document.createElement("i");
-        //icono.classList.add("fa-solid");
-        //icono.classList.add("fa-plus");
-        //icono.id = `aniadir${juguete.nombre}`;
-        //icono.addEventListener("click",aniadirJuguete);
-        //botonAniadir.appendChild(icono);
         botonAniadir.addEventListener("click", aniadirJuguete);
         let fila = document.createElement("tr");
         let imgContenedor = document.createElement("td");
@@ -196,19 +216,19 @@ function mostrarResultadosJuguetes(juguetes, filtro = '') {
         fila.append(imgContenedor, nombreContenedor, botonContenedor);
         tabla.appendChild(fila);
     });
-
-
 }
 
-// Función aniadirJuguete
+/* Función eliminarJuguete()
+¿Qué hace? --> Busca el juguete seleccionado en el formulario en la bbdd y muestra en la carta el juguete mediante DOM
+               junto al boton de eliminar que eliminará el juguete(elemento) en el DOM en caso de ser pulsado
+*/
 async function aniadirJuguete(event) {
     let nombreBoton = event.target.id;
-    console.log(nombreBoton);
     let nombreJuguete = nombreBoton.replace('aniadir', '');
-    // Añado los juguetes al array global
+    // Añadimos los juguetes al array global
     let juguete = event.target.value;
+    // Añadimos el juguete al array global de juguetes
     juguetes.push(parseInt(juguete));
-    console.log(nombreJuguete);
 
     try {
         const response = await fetch(`http://127.0.0.1:8000/juguetes/${nombreJuguete}`, {
@@ -221,23 +241,18 @@ async function aniadirJuguete(event) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         } else {
-            // Obtener los datos del juguete
             const juguete = await response.json();
 
             if (juguete && juguete.nombre && juguete.imagen) {
-                // Crear el elemento para mostrar el juguete en el contenedor "juguetesPedidos"
                 let contenedorPedidos = document.getElementById("juguetesPedidos");
 
-                // Crear el div que contendrá el juguete
                 let jugueteDiv = document.createElement("div");
                 jugueteDiv.classList.add("juguete-pedido");
 
-                // Crear la imagen del juguete
                 let img = document.createElement("img");
                 img.src = `../img/${juguete.imagen}`;
                 img.classList.add("imagen-juguete");
 
-                // Crear el nombre del juguete
                 let nombre = document.createElement("p");
                 nombre.innerHTML = juguete.nombre;
 
@@ -247,10 +262,7 @@ async function aniadirJuguete(event) {
                 botonEliminar.innerHTML = `<i class="fa-solid fa-x"></i>`;
                 botonEliminar.addEventListener("click", eliminarJuguete);
 
-                // Agregar la imagen y el nombre al div
-                jugueteDiv.append(img,nombre,botonEliminar);               
-
-                // Agregar el div al contenedor de "juguetesPedidos"
+                jugueteDiv.append(img, nombre, botonEliminar);
                 contenedorPedidos.appendChild(jugueteDiv);
             }
         }
@@ -260,25 +272,25 @@ async function aniadirJuguete(event) {
     }
 }
 
-// Función eliminar juguete
+/* Función eliminarJuguete()
+¿Qué hace? --> Busca el elemento que contiene el boton al que ha sido asignado y borra dicho elemento
+*/
 function eliminarJuguete(event) {
     console.log("Estoy en eliminar");
     // Buscamos el contenedor padre del botón
-    let divJuguete = event.target.closest(".juguete-pedido"); 
+    let divJuguete = event.target.closest(".juguete-pedido");
     // Si existe lo borra
     if (divJuguete) {
         divJuguete.remove();
-    }   
+    }
 }
 
-
-
+/* Función crearCarta()
+¿Qué hace? --> Almacena el nombre del usuario y el rey mago, los juguetes(objetos) en la tabla cartas de la bbdd
+*/
 document.getElementById("crearCarta").addEventListener("click", async (event) => {
-   
+
     event.preventDefault();
-    console.log("Entrando en la funcion");
-    // Si los inputs son correctos ingresamos el usuario en la BD
-    debugger
     let usuarioSelect = document.getElementById("selectorUsu");
     let reySelect = document.getElementById("selectorRey");
 
@@ -291,53 +303,26 @@ document.getElementById("crearCarta").addEventListener("click", async (event) =>
     let reyId = parseInt(datos2[1]);
     let juguetesCarta = juguetes;
 
-    //const usuarioId = usuarioSelect.value; // Obtén el valor seleccionado
-    //const reyId = reySelect.value; // Obtén el valor seleccionado  
-    
-        //let usuario = document.getElementById("selectorUsu").value;
-        //let usuarioId = usuario.id;
-        //let rey = document.getElementById("selectorRey").value;
-        //let reyId = rey.id;
-        console.log(juguetes);
-        console.log(usuarioId);
-        console.log(reyId);
-        try {
-            
-            const response = await fetch("http://127.0.0.1:8000/cartas/", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    //console.log(usuario.id, rey.id);
-                    //usuarioId , reyId, juguetes
+    try {
 
-                        usuario_id: usuarioId,
-                        rey_mago_id: reyId,
-                        juguetes_ids: juguetesCarta
-                        
-                     
-                })
-            });
-            alert("carta añadida");
-            //window.location.href = "../html/listaVista.html";
-            
+        const response = await fetch("http://127.0.0.1:8000/cartas/", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({          
+                usuario_id: usuarioId,
+                rey_mago_id: reyId,
+                juguetes_ids: juguetesCarta
 
-        } catch (e) {
-            alert('algo salio mal');
-            console.error(e);
-            //errorEntrando =true;
-        }
-    
-    
+            })
+        });
+            alert("carta añadida");      
+    } catch (e) {
+        alert('algo salio mal');
+        console.error(e);
+    }
 });
-
-
-
-
-
-
-
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025

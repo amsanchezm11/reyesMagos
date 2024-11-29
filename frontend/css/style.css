@@ -13,18 +13,25 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 body {
     font-family: 'Georgia', serif;
     margin: 0;
     padding: 0;
-    /* color #006400 Verde oscuro navideño */
+    background-image: url(../img/nieve.gif);
+    width: 100%;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
 }
 
 .container {
@@ -526,6 +533,7 @@ span {
 
 .juguete-pos {
     margin-top: 100px;
+    height: auto;
 }
 
 #tablaJuguetes {
@@ -557,4 +565,25 @@ span {
     width: max-content;
     table-layout: auto;
     border-collapse: collapse;
+}
+
+.container-tabla td{
+    text-align: center;
+}
+
+.contenedor-botones-carta{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.carta-pos{
+    margin-top: 200px;
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+}
+
+.fila-carta{
+    margin-bottom: 20px;
 }

@@ -1,10 +1,19 @@
+/* Función checkNombreJuguete
+   ¿Qué hace? --> Configura la regex y llama a la función comprobarRegex()
+   Parámetros --> Valor del input(element)
+   Devuelve --> True/False
+*/
 function checkNombreRey(element) {
 
     let regex = /^(Melchor|Gaspar|Baltasar)$/; 
     return comprobarRegex(element, regex);
     // Texto Admite --> Los valores Melchor | Gaspar | Baltasar 
 }
-
+/* Función comprobarRegex
+   ¿Qué hace? --> Comprueba que el input cumple las condiciones de la regex
+   Parámetros --> Valor del input(element) y la regex a comprobar(regex)
+   Devuelve --> True/False
+*/
 function comprobarRegex(element, regex) {
    // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
     if (regex.test(element.value)) {
@@ -16,7 +25,10 @@ function comprobarRegex(element, regex) {
     }
 }
 
-
+/* Función checkInputs
+   ¿Qué hace? --> Comprueba que todos los inputs del formulario estén bien
+   Devuelve --> True/False
+*/
 document.getElementById("crearRey").addEventListener("click", checkInputs);
 function checkInputs() {
 
@@ -41,6 +53,9 @@ function checkInputs() {
     return todoOk;
 }
 
+/* Función crearJuguete
+   ¿Qué hace? --> Comprueba que el valor del input sea correcto y añade el rey a la bbdd
+*/
 document.getElementById("crearRey").addEventListener("click", async (event) => {
     event.preventDefault();
   

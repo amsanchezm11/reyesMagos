@@ -1,10 +1,19 @@
+/* Función checkNombreJuguete
+   ¿Qué hace? --> Configura la regex y llama a la función comprobarRegex()
+   Parámetros --> Valor del input(element)
+   Devuelve --> True/False
+*/
 function checkNombre(element) {
     let regex = /^[A-Z][a-z]{0,9}$/;
     return comprobarRegex(element, regex);
     // Texto Admite --> Nombre de la persona que empiece por mayúscula, longitud máxima 10 
 }
 
-
+/* Función checkNombreJuguete
+   ¿Qué hace? --> Configura la regex y llama a la función comprobarRegex()
+   Parámetros --> Valor del input(element)
+   Devuelve --> True/False
+*/
 function checkEdad(element) {
 
     let regex = /^(1[0-5]|[0-9])$/;
@@ -12,6 +21,11 @@ function checkEdad(element) {
     // Texto Admite --> Edad de la persona entre 0 y 15
 }
 
+/* Función comprobarRegex
+   ¿Qué hace? --> Comprueba que el input cumple las condiciones de la regex
+   Parámetros --> Valor del input(element) y la regex a comprobar(regex)
+   Devuelve --> True/False
+*/
 function comprobarRegex(element, regex) {
     // Si cumple la condición del regex el borde del input se pone de color verde, en caso negativo se pone de color rojo
     if (regex.test(element.value)) {
@@ -23,19 +37,23 @@ function comprobarRegex(element, regex) {
     }
 }
 
-
+/* Función checkInputs
+   ¿Qué hace? --> Comprueba que todos los inputs del formulario estén bien y cambia el color de los bordes 
+                  en caso de que estén bien o mal escritos
+   Devuelve --> True/False
+*/
 function checkInputs() {
     let nombre = document.getElementById("nombre");
     let edad = document.getElementById("edad");
     let aviso = document.getElementById("aviso");
-    
+
     let todoOk = false;
 
     todoOk = checkNombre(nombre);
 
     if (!todoOk) {
         checkEdad(edad);
-    }  
+    }
 
     if (nombre.className == "rojo") {
         aviso.classList.remove("avisoV");
@@ -51,42 +69,20 @@ function checkInputs() {
     } else {
         aviso.classList.remove("avisoR");
         aviso.classList.add("avisoV");
-        // MENSAJE DE QUE SE HA AÑADIDO CORRECTAMENTE
         aviso.innerHTML = "";
         aviso.innerHTML = "Usuario añadido correctamente.";
-        // RESETEO LAS CLASES DE LOS INPUTS PARA QUE NO SE LE QUEDE EL COLOR VERDE DEL BORDER
         nombre.className = "";
         edad.className = "";
     }
     return todoOk;
 }
 
-// Función mostrarVerUsuarios()
-function mostrarVerUsuarios() {
-
-    let botones = document.getElementById("containerVer");
-
-    if (!document.getElementById("verUsuarios")) {
-        let boton = document.createElement("button");
-        boton.id = "verUsuarios";
-        boton.type = "submit";
-        boton.innerHTML = "Ver Usuarios";
-        botones.appendChild(boton);
-
-        // Le añadimos la función de verUsuarios al botón
-        document.getElementById("verUsuarios").addEventListener("click", function () {
-            window.location.href = "./html/listaVista.html";
-        });
-    }
-
-}
-
-// FETCH
-
+/* Función mostrarVerUsuarios()
+   ¿Qué hace? --> Comprueba que todos los inputs del formulario estén bien y cambia el color de los bordes 
+                  en caso de que estén bien o mal escritos
+*/
 document.getElementById("crear").addEventListener("click", async (event) => {
     event.preventDefault();
-    console.log("Entrando en la funcion");
-    console.log(checkInputs());
     // Si los inputs son correctos ingresamos el usuario en la BD
     if (checkInputs()) {
         console.log(checkInputs());
@@ -106,15 +102,10 @@ document.getElementById("crear").addEventListener("click", async (event) => {
             });
 
             window.location.href = "../html/listaVista.html";
-            /*data = await response.json();
-            console.log(data);*/
-
         } catch (e) {
             alert('algo salio mal')
-            errorEntrando =true;
-        }
+        }
     }
-
 });
 
 // Función diasHastaReyes()

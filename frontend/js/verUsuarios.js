@@ -6,7 +6,11 @@ window.addEventListener("load", async (event) => {
     rellenarTabla(lista);
 });
 
-// Función obtener usuarios
+/* Función obtenerUsuarios()
+   ¿Qué hace? --> Hace una peticion a la bbdd de todos los usuarios que hay en ella
+   Parámetros --> Url donde vamos a obtener los datos
+   Devuelve --> Lista de usuarios o lista vacia
+*/
 async function obtenerUsuarios(url) {
     try {
         const response = await fetch(url, {
@@ -84,9 +88,6 @@ function rellenarTabla(usuarios) {
         let botones = document.createElement("td");
         botones.classList.add("acciones");
         // Creamos los 3 botones (aniadir / ver / borrar) y le asignamos ids dinámicos
-        // let aniadirCarta = document.createElement("button");
-        // aniadirCarta.id = `${usuario.nombre}Aniadir`;
-        // aniadirCarta.innerHTML = `<i class="fa-solid fa-plus"></i>`;
         let crearCarta = document.createElement("a");
         crearCarta.id = `${usuario.nombre}Carta`;
         crearCarta.innerHTML = `<i class="fa-solid fa-file"></i>`;
@@ -115,11 +116,10 @@ function rellenarTabla(usuarios) {
                     fila.remove();
                 }
 
-                console.log(`Elemento con ID ${id} eliminado correctamente.`);
-                return true; // Retorna true si la eliminación fue exitosa
+                return true; 
             } catch (error) {
                 console.error("Error al borrar el elemento:", error);
-                return false; // Retorna false en caso de error
+                return false; 
             }
         });
 

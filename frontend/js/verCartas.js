@@ -1,17 +1,18 @@
-
-
 // Ejecutamos la función al cargar la página
 window.addEventListener("load", async (event) => {
+
     event.preventDefault();
 
     const listaUsuarios = await obtenerUsuarios("http://127.0.0.1:8000/usuarios/");
-    //const listaCartas = await obtenerCartas("http://127.0.0.1:8000/cartas/");
-
     rellenarOptionUsuario(listaUsuarios);
-    //completarTabla(listaCartas);
 });
 
-// Función obtener usuarios
+/* Función obtenerUsuarios()
+   ¿Qué hace? --> Hace una solicitud a la bbdd para obtener todos los usuarios que están en ella
+   Parámetros --> Url dónde vamos a obtener los datos
+   Devuelve --> Todos los usuarios(data) o un array vacio en caso de no obtener datos
+*/
+
 async function obtenerUsuarios(url) {
     try {
         const response = await fetch(url, {
@@ -27,7 +28,7 @@ async function obtenerUsuarios(url) {
 
         const data = await response.json();
 
-        // Validar si la respuesta es un array
+        // Validamos si la respuesta es un array
         if (Array.isArray(data)) {
             return data;
         } else {
@@ -35,11 +36,15 @@ async function obtenerUsuarios(url) {
         }
     } catch (error) {
         console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
+        return [];
     }
 }
 
-// Función obtener usuarios
+/* Función obtenerCartas()
+   ¿Qué hace? --> Hace una solicitud a la bbdd para obtener todos las cartas que están en ella
+   Parámetros --> Url dónde vamos a obtener los datos
+   Devuelve --> Todas las cartas(data) o un array vacio en caso de no obtener datos
+*/
 async function obtenerCartas(url) {
     try {
         const response = await fetch(url, {
@@ -55,7 +60,6 @@ async function obtenerCartas(url) {
 
         const data = await response.json();
 
-        // Validar si la respuesta es un array
         if (Array.isArray(data)) {
             return data;
            
@@ -64,11 +68,17 @@ async function obtenerCartas(url) {
         }
     } catch (error) {
         console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
+        return []; 
     }
 }
 
-// Función rellenar select del usuarios
+/* Función rellenarOptionUsuario()
+   ¿Qué hace? --> Por cada elemento de la lista proporcionada por parámetros(usuarios) rellena los distintos
+                  options del select con id "usuarioVerCarta".
+                  Asigna al select un evento de tipo "change" que según el option que elija el usuario se 
+                  mostrará todas las cartas que tiene
+   Parámetros --> Lista de usuarios dónde vamos a obtener los datos
+*/
 function rellenarOptionUsuario(usuarios) {
     let select = document.getElementById("usuarioVerCarta");
 
@@ -97,7 +107,7 @@ function rellenarOptionUsuario(usuarios) {
 
             const data = await response.json();
             console.log("cartas en completarTabla:", data);
-            // Validar si la respuesta es un array
+
             if (data.result && Array.isArray(data.result)) {
                 completarTabla(data.result);
             } else {
@@ -106,40 +116,44 @@ function rellenarOptionUsuario(usuarios) {
             }
         } catch (error) {
             console.error("Error al obtener los resultados:", error);
-            return []; // Retorna un array vacío en caso de error
+            return []; 
         }
     });
 }
 
+/* Función obtenerRey()
+   ¿Qué hace? --> Obtiene de la bbdd todos los reyes magos que tiene y filtra por el id proporcionado
+                  por parámetro
+   Parámetros --> El id del rey por el que vamos a filtrar
+   Devuelve --> El rey que está asociado a la carta
+*/
 async function obtenerRey(reyId) {
     try {
-        // Hacer una solicitud para obtener los datos del rey mago
         const response = await fetch(`http://127.0.0.1:8000/reyes_magos/`);
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        const resultados = await response.json(); // Procesar la respuesta en formato JSON
+        const resultados = await response.json();
         console.log("Datos del Rey Mago:", resultados);
 
-        // Retornar el nombre del rey mago
-        //return resultado.nombre;
-        const reyMago = resultados.find(rey => rey.id === reyId);
+        let reyMago = resultados.find(rey => rey.id === reyId);
         return reyMago.nombre;
 
     } catch (error) {
         console.error("Error al obtener el Rey Mago:", error);
-        return "Desconocido"; // Valor predeterminado en caso de error
+        return "Desconocido";
     }
 }
 
 
 
-// Función rellenar select del usuarios
-
+/* Función completarTabla()
+   ¿Qué hace? --> Genera todas las filas con las cartas que tiene el usuario
+   Parámetros --> Lista de cartas del usuario
+*/
 async function completarTabla(cartas) {
 
-    //let select = document.getElementById("usuarioVerCarta");
     let tBody = document.getElementById("tBody");
 
     if (tBody.hasChildNodes()) {
@@ -149,26 +163,24 @@ async function completarTabla(cartas) {
     for (let carta of cartas) {
         let fila = document.createElement("tr");
         fila.classList.add("obtener-lista");
-        // Columna: ID de la carta
+        
         let cartaNombre = document.createElement("td");
         cartaNombre.innerHTML = `Carta ${carta.id}`;
 
-        // Columna: Nombre del Rey Mago
         let reyMago = document.createElement("td");
         reyMago.classList.add("nombreRey");
         let nombreRey = await obtenerRey(carta.rey_mago_id);
         reyMago.innerHTML = nombreRey;
 
-        // Columna: Número de juguetes
         let numJuguetes = document.createElement("td");
         numJuguetes.innerHTML = carta.juguetes_ids.length;
 
-        // Columna: Acciones
         let contenedorBotones = document.createElement("td");
         contenedorBotones.classList.add("contenedor-botones-carta");
 
         let borrarCarta = document.createElement("button");
         borrarCarta.innerHTML = "✖️";
+        borrarCarta.title = "Borrar carta";
         borrarCarta.id = `eliminar${carta.id}`;
         borrarCarta.addEventListener("click", async () => {
             try {
@@ -199,15 +211,46 @@ async function completarTabla(cartas) {
         verCarta.innerHTML = "🔍";
         verCarta.href = "#cartaAbajo";
         verCarta.id = `ver${carta.usuario_id}`;
+        verCarta.title = "Ver carta";
         verCarta.addEventListener("click", obtenerUsuarioNombre);
         verCarta.addEventListener("click", obtenerNombreRey);
-        verCarta.addEventListener("click", obtenerJuguetes);
+        verCarta.addEventListener("click", async () => {
+
+            let contenedorJuguetes = document.getElementById("juguetesPedidos");          
+            if (contenedorJuguetes.hasChildNodes) {
+                contenedorJuguetes.innerHTML = "";
+            }
+            let tabla = document.createElement("table");
+            contenedorJuguetes.appendChild(tabla);
+
+            carta.juguetes_ids.forEach(juguete => {
+                
+
+                let fila = document.createElement("tr");
+                fila.classList.add("fila-carta");
+                let contenedorImg = document.createElement("td");
+                let img = document.createElement("img");
+                img.src = `../img/${juguete.imagen}`;
+                img.classList.add("imagen-juguete");
+                contenedorImg.appendChild(img);
+                let contendorNombre = document.createElement("td");
+                contendorNombre.innerHTML = `${juguete.nombre}`;
+                fila.append(img,contendorNombre);
+                tabla.appendChild(fila);
+
+            });
+              
+        });
         contenedorBotones.append(borrarCarta, verCarta);
         fila.append(cartaNombre, reyMago, numJuguetes, contenedorBotones);
         tBody.appendChild(fila);
     }
 }
 
+/* Función obtenerUsuarioNombre()
+   ¿Qué hace? --> Obtiene el nombre y la edad del usuario y la pone en la carta
+   Parámetros --> El id del usuario sin transformar(event)
+*/
 async function obtenerUsuarioNombre(event) {
 
     let elemento = event.target.id;
@@ -239,87 +282,26 @@ async function obtenerUsuarioNombre(event) {
 
     } catch (error) {
         console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
+        return [];
     }
   
 }
 
+/* Función obtenerNombreRey()
+   ¿Qué hace? --> Obtiene el nombre del rey y lo pasa a la carta
+   Parámetros --> El id del rey de la carta(event)
+*/
 async function obtenerNombreRey(event) {
 
     let elemento = event.target;
-    console.log(event.target);
-   // let userId = elemento.replace("ver", "");
-    //let idUsuario = parseInt(userId);
-    //console.log(userId);
-  
     let nombreRey = elemento.closest(".obtener-lista");
     let nodoNombreRey = nombreRey.querySelector(".nombreRey");
 
-    console.log(nombreRey);
-    console.log(nodoNombreRey);
-    console.log();
     let nombreReyCarta = document.getElementById("reyCarta");
     nombreReyCarta.innerHTML = `${nodoNombreRey.textContent}`;
 }
 
-async function obtenerJuguetes(event) {
-    
-    let idUsuario = event.target.id;
-    let userId = idUsuario.replace("ver", "");
-    let id = parseInt(userId);
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("cartas en completarTabla2:", data.result[0].juguetes_ids);
-        // Validar si la respuesta es un array
-        if (data.result && Array.isArray(data.result)) {
-
-            let juguetes = data.result[0].juguetes_ids;
-            let contenedorJuguetes = document.getElementById("juguetesPedidos");
-            if (contenedorJuguetes.hasChildNodes) {
-                contenedorJuguetes.innerHTML = "";
-            }
-
-            let tabla = document.createElement("table");
-            contenedorJuguetes.appendChild(tabla);
-
-            juguetes.forEach(juguete => {
-                let fila = document.createElement("tr");
-                fila.classList.add("fila-carta");
-                let contenedorImg = document.createElement("td");
-                let img = document.createElement("img");
-                img.src = `../img/${juguete.imagen}`;
-                img.classList.add("imagen-juguete");
-                contenedorImg.appendChild(img);
-                let contendorNombre = document.createElement("td");
-                contendorNombre.innerHTML = `${juguete.nombre}`;
-                fila.append(img,contendorNombre);
-                tabla.appendChild(fila);
-            });
-
-        } else {
-            console.error("data.result no es un array válido:", data.result);
-            throw new Error("El formato de la respuesta no es correcto.");
-        }
-    } catch (error) {
-        console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
-    }
-
-}
-
-
-/*  Función crear tabla
+/*  Función crearTabla()
     ¿Qué hace? --> Obtiene el elemento(div) con el id "lista" que es el elemento que va a contener la tabla
                    Se crea la tabla con thead y tbody y con la cabecera configurada  */
 function crearTabla() {
@@ -351,10 +333,6 @@ function crearTabla() {
     lista.appendChild(tabla);
 
 }
-
-
-
-
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025

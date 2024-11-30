@@ -6,8 +6,11 @@ window.addEventListener("load", async (event) => {
     rellenarTabla(lista);
 });
 
-
-// Función obtener usuarios
+/* Función obtenerJuguetes()
+   ¿Qué hace? --> Hace una peticion a la bbdd de todos los juguetes que hay en ella
+   Parámetros --> Url donde vamos a obtener los datos
+   Devuelve --> Lista de juguetes o lista vacia
+*/
 async function obtenerJuguetes(url) {
     try {
         const response = await fetch(url, {
@@ -23,7 +26,6 @@ async function obtenerJuguetes(url) {
 
         const data = await response.json();
 
-        // Validar si la respuesta es un array
         if (Array.isArray(data)) {
             return data;
         } else {
@@ -31,10 +33,9 @@ async function obtenerJuguetes(url) {
         }
     } catch (error) {
         console.error("Error al obtener los resultados:", error);
-        return []; // Retorna un array vacío en caso de error
+        return [];
     }
 }
-
 
 /*  Función crear tabla
     ¿Qué hace? --> Obtiene el elemento(div) con el id "lista" que es el elemento que va a contener la tabla
@@ -125,8 +126,6 @@ function rellenarTabla(juguetes) {
         tablaBody.appendChild(fila);
     });
 }
-
-
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025

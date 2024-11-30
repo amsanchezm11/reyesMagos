@@ -6,8 +6,11 @@ window.addEventListener("load", async (event) => {
     rellenarTabla(lista);
 });
 
-
-// Función obtener usuarios
+/* Función obtenerReyes()
+   ¿Qué hace? --> Hace una peticion a la bbdd de todos los reyes que hay en ella
+   Parámetros --> Url donde vamos a obtener los datos
+   Devuelve --> Lista de reyes o lista vacia
+*/
 async function obtenerReyes(url) {
     try {
         const response = await fetch(url, {
@@ -65,7 +68,6 @@ function crearTabla() {
 
 }
 
-
 /* Función rellenarTabla()
     ¿Que hace? --> Obtiene el elemento tbody de la tabla y por cada usuario que hay en el array de usuarios
                    va creando y añadiendo una fila con todos los datos del usuario junto a los botones de acciones */
@@ -119,8 +121,6 @@ function rellenarTabla(reyes) {
         tablaBody.appendChild(fila);
     });
 }
-
-
 
 // Función diasHastaReyes()
 // ¿Qué hace? --> Te calcula los dias que faltan hasta el 6 de enero de 2025
